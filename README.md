@@ -1,1 +1,1 @@
-# HairApp - Gp - version 2
+# HairApp - Gestión de peluqueria
