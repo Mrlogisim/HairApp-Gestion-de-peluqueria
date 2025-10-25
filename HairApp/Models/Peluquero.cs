@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace HairApp.Models
 {
@@ -30,5 +31,11 @@ namespace HairApp.Models
 
         [Display(Name = "Activo")]
         public bool Activo { get; set; } = true;
+
+        // Relación muchos a muchos con Servicio
+        public ICollection<PeluqueroServicio> PeluqueroServicios { get; set; }
+
+        // Relación muchos a muchos con TurnoDetalles
+        public ICollection<TurnoDetalles> TurnoDetalles { get; set; }
     }
 }

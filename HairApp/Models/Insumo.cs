@@ -64,7 +64,7 @@ namespace HairApp.Models
             get => Cantidad <= StockMinimo;
         }
 
-        // Relación con ServicioInsumos
-        public virtual ICollection<ServicioInsumo>? ServicioInsumos { get; set; }
+        // Relación muchos a muchos con Servicio
+        public virtual ICollection<ServicioInsumo>? ServicioInsumo { get; set; }
     }
 }
