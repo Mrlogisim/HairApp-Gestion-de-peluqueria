@@ -26,6 +26,17 @@ namespace HairApp.Data
         {
             base.OnModelCreating(modelBuilder);
 
+
+            // --- 🔧 Configurar las fechas de Insumo para usar timestamp sin zona horaria ---
+            modelBuilder.Entity<Insumo>()
+                .Property(i => i.FechaVencimiento)
+                .HasColumnType("timestamp without time zone");
+
+            modelBuilder.Entity<Insumo>()
+                .Property(i => i.FechaUltimaReposicion)
+                .HasColumnType("timestamp without time zone");
+
+
             // Configuración de la relación muchos a muchos Peluquero-Servicio
             modelBuilder.Entity<PeluqueroServicio>()
                 .HasKey(ps => new { ps.PeluqueroId, ps.ServicioId });

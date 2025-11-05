@@ -1,12 +1,16 @@
 ﻿using HairApp.Models;
 using HairApp.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace HairApp.Controllers
 {
+    [Authorize] // Requiere login para acceder y cargar la vista de Home/Index
+
     public class ClientesController : Controller
     {
+
         private readonly ClienteService _clienteService;
 
         public ClientesController(ClienteService clienteService)

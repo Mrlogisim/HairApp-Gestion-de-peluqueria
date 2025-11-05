@@ -1,11 +1,30 @@
 using HairApp.Data;
-using Microsoft.EntityFrameworkCore;
+using HairApp.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllersWithViews();
+
+
+// NUEVO: Implementación de autenticación obligatoria
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+})
+.AddCookie(options => // Este método configura el esquema de autenticación basado en cookies.
+                      // Aquí defines cómo se manejarán las cookies de autenticación.
+{
+    // LoginPath: Especifica la ruta a la que se redirigirá al usuario cuando intente acceder a una página protegida sin estar autenticado.
+    // LogoutPath: Define la ruta que se utilizará para cerrar sesión. 
+    options.LoginPath = "/Identity/Account/Login"; 
+    options.LogoutPath = "/Identity/Account/Logout";
+});
+
 
 // Con esto puedo ver los cambios con solo actualizar la pagina
 builder.Services.AddRazorPages().AddRazorRuntimeCompilation(); 
@@ -24,6 +43,13 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 
 // Agregar soporte para controladores con vistas
 builder.Services.AddControllersWithViews();
+
+// Aca estoy registrando los servicios en un contenedor de dependencias de ASP.NET Core (usando builder.Services)
+// AddScoped define el ciclo de vida de los servicios.
+// Con esto puedo usar los servicios en los controladores(?) 
+builder.Services.AddScoped<InsumoService>();
+builder.Services.AddScoped<ClienteService>();
+
 
 /*
 builder.Services.ConfigureApplicationCookie(options =>

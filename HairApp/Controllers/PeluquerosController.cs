@@ -1,15 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using HairApp.Data;
+using HairApp.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using HairApp.Data;
-using HairApp.Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace HairApp.Controllers
 {
+    [Authorize] // Requiere login para acceder y cargar la vista de Home/Index
+
     public class PeluquerosController : Controller
     {
         private readonly ApplicationDbContext _context;
