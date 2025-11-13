@@ -1,0 +1,102 @@
+﻿/* Estilos optimizados para Login con Bootstrap */
+body {
+    background: linear-gradient(135deg, #6c63ff 0%, #4a43b8 50%, #3f3d56 100%);
+    min-height: 100vh;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Utiliza las clases de Bootstrap para el centrado */
+.auth-wrapper {
+    min-height: 100vh;
+}
+
+.auth-card {
+    background-color: #fff;
+    border-radius: 1rem;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(10px);
+}
+
+.auth-logo {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #6c63ff;
+    text-shadow: 0 2px 4px rgba(108, 99, 255, 0.2);
+    letter-spacing: 1px;
+}
+
+/* Mejoras para formularios Bootstrap */
+.auth-card .form-control {
+    border-radius: 0.75rem;
+    border: 1px solid #e1e1e1;
+    transition: all 0.3s ease;
+}
+
+    .auth-card .form-control:focus {
+        border-color: #6c63ff;
+        box-shadow: 0 0 0 0.2rem rgba(108, 99, 255, 0.25);
+    }
+
+.auth-card .btn-primary {
+    background: linear-gradient(135deg, #6c63ff, #5a52d5);
+    border: none;
+    border-radius: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(108, 99, 255, 0.3);
+}
+
+    .auth-card .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(108, 99, 255, 0.4);
+        background: linear-gradient(135deg, #5a52d5, #4a43b8);
+    }
+
+/* Enlaces */
+.auth-links a {
+    color: #6c63ff;
+    text-decoration: none;
+    transition: color 0.3s ease;
+    font-weight: 500;
+}
+
+    .auth-links a:hover {
+        color: #4a43b8;
+        text-decoration: underline;
+    }
+
+/* Footer */
+footer {
+    position: fixed;
+    bottom: 20px;
+    width: 100%;
+    text-align: center;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+    z-index: -1;
+}
+
+/* Efectos visuales adicionales */
+.auth-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+    .auth-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    }
+
+/* Responsive para pantallas muy pequeñas (por si acaso) */
+@media (max-width: 400px) {
+    .auth-card {
+        margin: 1rem;
+        padding: 1.5rem;
+    }
+
+    .auth-logo {
+        font-size: 2rem;
+    }
+}

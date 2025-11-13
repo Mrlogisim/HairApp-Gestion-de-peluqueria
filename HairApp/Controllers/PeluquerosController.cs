@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace HairApp.Controllers
 {
-    [Authorize] // Requiere login para acceder y cargar la vista de Home/Index
+    [Authorize] // Requiere login para acceder y cargar las vistas
 
     public class PeluquerosController : Controller
     {

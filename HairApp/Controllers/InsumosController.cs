@@ -1,9 +1,11 @@
 ﻿using HairApp.Models;
 using HairApp.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace HairApp.Controllers
 {
+    [Authorize] // Requiere login para acceder y cargar las vistas 
     public class InsumosController : Controller
     {
         private readonly InsumoService _insumoService;
@@ -19,7 +21,7 @@ namespace HairApp.Controllers
         public async Task<IActionResult> Index()
         {
             var insumos = await _insumoService.ObtenerTodosAsync();
-            return View(); // se cambio View(insumos) por View()
+            return View(insumos); // se cambio View(insumos) por View()
         }
 
         // Crea un nuevo insumo

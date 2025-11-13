@@ -2,7 +2,50 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<head>
+
+    <link rel="stylesheet" href="~/css/Gallery.css" asp-append-version="true" /> @* Para las galerias *@
+
+</head>
+
+<div id="miCarrusel" class="carousel slide" data-bs-ride="carousel">
+
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#miCarrusel" data-bs-slide-to="0" class="active" aria-current="true"></button>
+        <button type="button" data-bs-target="#miCarrusel" data-bs-slide-to="1"></button>
+        <button type="button" data-bs-target="#miCarrusel" data-bs-slide-to="2"></button>
+    </div>
+
+    <div class="carousel-inner">
+        <div class="carousel-item active">
+            <img src="~/images/images.jpeg" class="d-block w-100" alt="Slide 1">
+            <div class="carousel-caption d-none d-md-block text-dark">
+                <h5>¡Bienvenido a HairApp!</h5>
+                <p>Tu solución integral para gestión de peluquerías.</p>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <img src="~/images/fotolia_61427847_subscription_monthly_m-1576654671.webp" class="d-block w-100" alt="Slide 2">
+            <div class="carousel-caption d-none d-md-block text-dark">
+                <h5>Gestiona tus Turnos</h5>
+                <p>Organiza tu agenda de forma fácil y rápida.</p>
+            </div>
+        </div>
+        <div class="carousel-item">
+            <img src="~/images/resizer.jpeg" class="d-block w-100" alt="Slide 3">
+        </div>
+    </div>
+
+    <button class="carousel-control-prev" type="button" data-bs-target="#miCarrusel" data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Anterior</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#miCarrusel" data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Siguiente</span>
+    </button>
+</div>
+
+<div class="text-center mt-4">
+    <p>Explora nuestras secciones usando la barra lateral.</p>
 </div>

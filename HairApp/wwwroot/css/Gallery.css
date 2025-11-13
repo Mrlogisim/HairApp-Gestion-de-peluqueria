@@ -1,0 +1,71 @@
+﻿/* --- Estilos para el Carrusel de Inicio --- */
+
+h5, h6, h7 {
+    color: white;
+}
+
+p {
+    color: white;
+}
+
+/* Contenedor principal del carrusel */
+#miCarrusel {
+    border-radius: 12px; /* Redondea las esquinas */
+    overflow: hidden; /* Asegura que las imágenes no se salgan de las esquinas redondeadas */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Sombra suave, como en tus otras tarjetas */
+    max-height: 450px; /* Opcional: Fija una altura máxima */
+}
+
+/* Capa de la imagen dentro del carrusel */
+.carousel-item {
+    position: relative; /* Necesario para la superposición */
+}
+
+    /* Superposición oscura para mejorar la legibilidad del texto */
+    .carousel-item::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: linear-gradient(to top, rgba(0,0,0,0.5), rgba(0,0,0,0)); /* Gradiente oscuro de abajo hacia arriba */
+    }
+
+    /* Asegura que la imagen se vea bien */
+    .carousel-item img {
+        object-fit: cover; /* Evita que la imagen se distorsione */
+        max-height: 450px; /* Debe coincidir con la altura máxima del carrusel */
+    }
+
+/* Estilos para el texto (caption) */
+.carousel-caption {
+    position: absolute;
+    bottom: 20px; /* Lo sube un poco del borde */
+    left: 5%; /* Alinea a la izquierda */
+    right: 5%;
+    text-align: left; /* Alinea el texto a la izquierda */
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.3); /* Fondo semitransparente sutil */
+    border-radius: 8px;
+    z-index: 10; /* Se asegura de que esté sobre la superposición */
+}
+
+    .carousel-caption h5 {
+        font-weight: 700; /* Letra más gruesa para el título */
+        font-size: 1.75rem;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.7); /* Sombra de texto */
+    }
+
+    .carousel-caption p {
+        font-size: 1.1rem;
+        text-shadow: 1px 1px 2px rgba(0,0,0,0.7); /* Sombra de texto */
+    }
+
+/* Ajustes para los controles (flechas) */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo para que se vean mejor */
+    border-radius: 50%;
+    padding: 20px;
+}

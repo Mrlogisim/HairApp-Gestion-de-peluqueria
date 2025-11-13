@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace HairApp.Controllers
 {
-    [Authorize] // Requiere login para acceder y cargar la vista de Home/Index
+    [Authorize] // Requiere login para acceder y cargar las vistas
 
     public class ClientesController : Controller
     {
@@ -49,12 +49,24 @@ namespace HairApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Nombre,Apellido,Telefono,Email")] Cliente cliente)
         {
-            if (ModelState.IsValid)
+            if (!ModelState.IsValid)
+                return View(cliente);
+
+            try
             {
                 await _clienteService.CrearAsync(cliente);
+                TempData["Success"] = "Cliente creado correctamente.";
                 return RedirectToAction(nameof(Index));
             }
-            return View(cliente);
+            catch (Exception ex)
+            {
+                // Registrar el error en logs (opcional)
+                // _logger.LogError(ex, "Error al crear cliente");
+
+                // Mostrar mensaje de error al usuario
+                ModelState.AddModelError(string.Empty, $"Ocurrió un error al crear el cliente: {ex.Message}");
+                return View(cliente);
+            }
         }
 
         // GET: Clientes/Edit/5
