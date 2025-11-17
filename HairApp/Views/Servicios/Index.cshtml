@@ -1,0 +1,149 @@
+﻿@model IEnumerable<HairApp.Models.Servicio>
+
+@{
+    ViewData["Title"] = "Gestión de Servicios";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="h3 mb-0 text-gray-800">
+            <i class="fas fa-cut me-2"></i>Gestión de Servicios
+        </h1>
+        <a asp-action="Create" class="btn btn-primary">
+            <i class="fas fa-plus me-1"></i>Nuevo Servicio
+        </a>
+    </div>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3 d-flex justify-content-between align-items-center">
+            <h6 class="m-0 font-weight-bold text-primary">Lista de Servicios</h6>
+            <div class="d-flex">
+                <input type="text" id="searchInput" class="form-control form-control-sm me-2" placeholder="Buscar servicios..." />
+                <button class="btn btn-sm btn-outline-secondary" id="btnClearSearch" type="button">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-striped table-hover" id="serviciosTable">
+                    <thead class="table-dark">
+                        <tr>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Nombre)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Precio)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Duracion)
+                            </th>
+                            <th>
+                                @Html.DisplayNameFor(model => model.Descripcion)
+                            </th>
+                            <th class="text-center">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td class="fw-bold">
+                                    @Html.DisplayFor(modelItem => item.Nombre)
+                                </td>
+                                <td class="text-success fw-bold">
+                                    $@Html.DisplayFor(modelItem => item.Precio)
+                                </td>
+                                <td>
+                                    <span class="badge bg-info text-dark">
+                                        @Html.DisplayFor(modelItem => item.Duracion) min
+                                    </span>
+                                </td>
+                                <td class="text-muted">
+                                    @{
+                                        var descripcion = item.Descripcion ?? "Sin descripción";
+                                        var descripcionCorta = descripcion.Length > 50 ?
+                                        descripcion.Substring(0, 50) + "..." : descripcion;
+                                    }
+                                    @descripcionCorta
+                                </td>
+                                <td class="text-center">
+                                    <div class="btn-group" role="group">
+                                        <a asp-action="Details" asp-route-id="@item.Id_servicio"
+                                           class="btn btn-sm btn-info" title="Ver detalles">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a asp-action="Edit" asp-route-id="@item.Id_servicio"
+                                           class="btn btn-sm btn-warning" title="Editar">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a asp-action="Delete" asp-route-id="@item.Id_servicio"
+                                           class="btn btn-sm btn-danger" title="Eliminar">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+                @if (!Model.Any())
+                {
+                    <div class="text-center py-4">
+                        <i class="fas fa-cut fa-3x text-muted mb-3"></i>
+                        <h5 class="text-muted">No hay servicios registrados</h5>
+                        <p class="text-muted">Comienza agregando tu primer servicio</p>
+                        <a asp-action="Create" class="btn btn-primary mt-2">
+                            <i class="fas fa-plus me-1"></i>Crear Primer Servicio
+                        </a>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Búsqueda en tiempo real
+            $('#searchInput').on('keyup', function() {
+                var value = $(this).val().toLowerCase();
+                $('#serviciosTable tbody tr').filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+                });
+            });
+
+            // Limpiar búsqueda
+            $('#btnClearSearch').on('click', function() {
+                $('#searchInput').val('');
+                $('#serviciosTable tbody tr').show();
+            });
+        });
+    </script>
+
+    <style>
+        .table th {
+            border-top: none;
+            font-weight: 600;
+        }
+
+        .btn-group .btn {
+            margin: 0 2px;
+        }
+
+        .badge {
+            font-size: 0.85em;
+        }
+
+        #searchInput {
+            min-width: 250px;
+        }
+
+        .table-responsive {
+            border-radius: 0.35rem;
+        }
+    </style>
+}

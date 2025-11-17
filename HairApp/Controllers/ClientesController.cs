@@ -49,8 +49,24 @@ namespace HairApp.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Nombre,Apellido,Telefono,Email")] Cliente cliente)
         {
+            
             if (!ModelState.IsValid)
-                return View(cliente);
+            {
+                // --- INICIO DE CÓDIGO DE DEBUG AÑADIDO ---
+                // Esto imprimirá los errores exactos en tu consola de Visual Studio
+                var errors = ModelState.Values.SelectMany(v => v.Errors);
+                Console.WriteLine("--- FALLÓ LA VALIDACIÓN DEL MODELO ---");
+                foreach (var error in errors)
+                {
+                    // Imprime el error específico
+                    Console.WriteLine(error.ErrorMessage);
+                }
+                // --- FIN DE CÓDIGO DE DEBUG ---
+
+                
+
+                return View(cliente); // La página se recarga
+            }
 
             try
             {
@@ -60,8 +76,10 @@ namespace HairApp.Controllers
             }
             catch (Exception ex)
             {
-                // Registrar el error en logs (opcional)
-                // _logger.LogError(ex, "Error al crear cliente");
+                // --- CÓDIGO DE DEBUG AÑADIDO ---
+                Console.WriteLine($"--- ERROR EN EL TRY-CATCH ---");
+                Console.WriteLine(ex.Message);
+                // --- FIN CÓDIGO DE DEBUG ---
 
                 // Mostrar mensaje de error al usuario
                 ModelState.AddModelError(string.Empty, $"Ocurrió un error al crear el cliente: {ex.Message}");

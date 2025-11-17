@@ -11,19 +11,19 @@ builder.Services.AddControllersWithViews();
 
 
 // NUEVO: Implementación de autenticación obligatoria
-builder.Services.AddAuthentication(options =>
-{
-    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-    options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-})
-.AddCookie(options => // Este método configura el esquema de autenticación basado en cookies.
-                      // Aquí defines cómo se manejarán las cookies de autenticación.
-{
-    // LoginPath: Especifica la ruta a la que se redirigirá al usuario cuando intente acceder a una página protegida sin estar autenticado.
-    // LogoutPath: Define la ruta que se utilizará para cerrar sesión. 
-    options.LoginPath = "/Identity/Account/Login"; 
-    options.LogoutPath = "/Identity/Account/Logout";
-});
+//builder.Services.AddAuthentication(options =>
+//{
+//    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+//    options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+//})
+//.AddCookie(options => // Este método configura el esquema de autenticación basado en cookies.
+//                      // Aquí defines cómo se manejarán las cookies de autenticación.
+//{
+//    // LoginPath: Especifica la ruta a la que se redirigirá al usuario cuando intente acceder a una página protegida sin estar autenticado.
+//    // LogoutPath: Define la ruta que se utilizará para cerrar sesión. 
+//    options.LoginPath = "/Identity/Account/Login"; 
+//    options.LogoutPath = "/Identity/Account/Logout";
+//});
 
 
 // Con esto puedo ver los cambios con solo actualizar la pagina
@@ -36,7 +36,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 // Configurar Identity (usuarios, roles, etc.)
 builder.Services.AddDefaultIdentity<IdentityUser>(options =>
 {
-    options.SignIn.RequireConfirmedAccount = false; // No requiere email confirmado
+    options.SignIn.RequireConfirmedAccount = false; // No requiere email confirmado 
 })
 .AddRoles<IdentityRole>() // (Opcional) Si vas a usar roles
 .AddEntityFrameworkStores<ApplicationDbContext>();
@@ -50,8 +50,9 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddScoped<InsumoService>();
 builder.Services.AddScoped<ClienteService>();
 
-
-/*
+// Para que primero aparezca el login. Esto es de Identity.Application (?)
+// Antes esto estaba como comentario y el que se encargaba del login
+// era el builder.Services.AddAuthentication(options =>
 builder.Services.ConfigureApplicationCookie(options =>
 {
     // Ruta a donde se redirige si el usuario no está autenticado
@@ -60,13 +61,15 @@ builder.Services.ConfigureApplicationCookie(options =>
     // Ruta a donde se redirige si no tiene permisos (por ejemplo, rol incorrecto)
     options.AccessDeniedPath = "/Identity/Account/AccessDenied";
 
+    options.Cookie.Name = "HairAppAuth";
+
     // (Opcional) Tiempo de expiración de la cookie
     options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
 
     // (Opcional) Redirige automáticamente si la sesión expira
     options.SlidingExpiration = true;
 });
-*/
+
 
 
 
