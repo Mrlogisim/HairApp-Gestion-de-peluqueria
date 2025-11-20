@@ -23,10 +23,13 @@ namespace HairApp.Models
         [Range(1, int.MaxValue, ErrorMessage = "La duración debe ser al menos 1 minuto.")]
         public int Duracion { get; set; }
 
+        // CAMBIOS: ANTES NO TENIAN EL ?
+        // NOTA: VER SI QUITAR O NO EL SIMBOLO DE ?
+
         // Relación muchos a muchos con Peluquero
-        public ICollection<PeluqueroServicio> PeluqueroServicios { get; set; }
+        public ICollection<PeluqueroServicio>? PeluqueroServicios { get; set; }
 
         // Relación muchos a muchos con Insumo
-        public ICollection<ServicioInsumo> ServicioInsumo { get; set; }
+        public ICollection<ServicioInsumo>? ServicioInsumo { get; set; }
     }
 }

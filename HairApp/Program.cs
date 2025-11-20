@@ -49,6 +49,7 @@ builder.Services.AddControllersWithViews();
 // Con esto puedo usar los servicios en los controladores(?) 
 builder.Services.AddScoped<InsumoService>();
 builder.Services.AddScoped<ClienteService>();
+builder.Services.AddScoped<ServicioService>();
 
 // Para que primero aparezca el login. Esto es de Identity.Application (?)
 // Antes esto estaba como comentario y el que se encargaba del login
