@@ -53,7 +53,7 @@
                             <th>@Html.DisplayNameFor(model => model.Descripcion)</th>
                             <th>@Html.DisplayNameFor(model => model.Precio)</th>
                             <th>@Html.DisplayNameFor(model => model.Duracion)</th>
-                            <th class="text-center">Acciones</th>
+                            <th class="text-center" width="150">Acciones</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -82,24 +82,43 @@
                                         <span class="badge bg-info text-dark">@item.Duracion min</span>
                                     </td>
                                     <td class="text-center">
-                                        <button class="btn btn-sm btn-outline-warning me-1"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#modalEditar"
-                                                data-id="@item.Id_servicio"
-                                                data-nombre="@item.Nombre"
-                                                data-descripcion="@item.Descripcion"
-                                                data-precio="@item.Precio"
-                                                data-duracion="@item.Duracion">
-                                            <i class="bi bi-pencil-square"></i> Editar
-                                        </button>
+                                        <div class="btn-group btn-group-sm" role="group">
+                                            <!-- Botón Ver Detalles -->
+                                            <button class="btn btn-outline-primary"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#modalDetalles"
+                                                    data-id="@item.Id_servicio"
+                                                    data-nombre="@item.Nombre"
+                                                    data-descripcion="@item.Descripcion"
+                                                    data-precio="@item.Precio"
+                                                    data-duracion="@item.Duracion"
+                                                    title="Ver detalles">
+                                                <i class="bi bi-eye"></i>
+                                            </button>
 
-                                        <button class="btn btn-sm btn-outline-danger"
-                                                data-bs-toggle="modal"
-                                                data-bs-target="#modalEliminar"
-                                                data-id="@item.Id_servicio"
-                                                data-nombre="@item.Nombre">
-                                            <i class="bi bi-trash3"></i> Eliminar
-                                        </button>
+                                            <!-- Botón Editar -->
+                                            <button class="btn btn-outline-warning"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#modalEditar"
+                                                    data-id="@item.Id_servicio"
+                                                    data-nombre="@item.Nombre"
+                                                    data-descripcion="@item.Descripcion"
+                                                    data-precio="@item.Precio"
+                                                    data-duracion="@item.Duracion"
+                                                    title="Editar servicio">
+                                                <i class="bi bi-pencil-square"></i>
+                                            </button>
+
+                                            <!-- Botón Eliminar -->
+                                            <button class="btn btn-outline-danger"
+                                                    data-bs-toggle="modal"
+                                                    data-bs-target="#modalEliminar"
+                                                    data-id="@item.Id_servicio"
+                                                    data-nombre="@item.Nombre"
+                                                    title="Eliminar servicio">
+                                                <i class="bi bi-trash3"></i>
+                                            </button>
+                                        </div>
                                     </td>
                                 </tr>
                             }
@@ -177,6 +196,74 @@
                     </button>
                 </div>
             </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Detalles -->
+<div class="modal fade" id="modalDetalles" tabindex="-1" aria-labelledby="modalDetallesLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header bg-info text-white">
+                <h5 class="modal-title" id="modalDetallesLabel">
+                    <i class="bi bi-eye me-2"></i>Detalles del Servicio
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Nombre del Servicio</label>
+                            <p class="form-control-plaintext" id="detalle-nombre">-</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Precio</label>
+                            <p class="form-control-plaintext">
+                                <span class="badge bg-success fs-6" id="detalle-precio">-</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">Duración</label>
+                            <p class="form-control-plaintext">
+                                <span class="badge bg-info text-dark" id="detalle-duracion">-</span>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label fw-bold">ID del Servicio</label>
+                            <p class="form-control-plaintext text-muted" id="detalle-id">-</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mb-3">
+                    <label class="form-label fw-bold">Descripción</label>
+                    <div class="card">
+                        <div class="card-body">
+                            <p class="card-text" id="detalle-descripcion" style="min-height: 100px;">
+                                <span class="text-muted">Sin descripción disponible</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+                    <i class="bi bi-x-circle me-1"></i>Cerrar
+                </button>
+                <button type="button" class="btn btn-warning" id="btn-editar-desde-detalles">
+                    <i class="bi bi-pencil-square me-1"></i>Editar Servicio
+                </button>
+            </div>
         </div>
     </div>
 </div>
@@ -277,8 +364,45 @@
 
 @section Scripts {
     <script>
-        // Cargar datos en el modal Editar
+        // Cargar datos en el modal Detalles
         document.addEventListener('DOMContentLoaded', function() {
+            const modalDetalles = document.getElementById('modalDetalles');
+            if (modalDetalles) {
+                modalDetalles.addEventListener('show.bs.modal', function (event) {
+                    const button = event.relatedTarget;
+                    const id = button.getAttribute('data-id');
+                    const nombre = button.getAttribute('data-nombre');
+                    const descripcion = button.getAttribute('data-descripcion') || 'Sin descripción disponible';
+                    const precio = button.getAttribute('data-precio');
+                    const duracion = button.getAttribute('data-duracion');
+
+                    // Llenar los campos del modal de detalles
+                    document.getElementById('detalle-id').textContent = '#' + id;
+                    document.getElementById('detalle-nombre').textContent = nombre;
+                    document.getElementById('detalle-descripcion').textContent = descripcion;
+                    document.getElementById('detalle-precio').textContent = '$' + parseFloat(precio).toFixed(2);
+                    document.getElementById('detalle-duracion').textContent = duracion + ' minutos';
+
+                    // Configurar el botón de editar desde detalles
+                    document.getElementById('btn-editar-desde-detalles').onclick = function() {
+                        // Cerrar modal de detalles
+                        bootstrap.Modal.getInstance(modalDetalles).hide();
+
+                        // Llenar y abrir modal de editar
+                        document.getElementById('edit-id').value = id;
+                        document.getElementById('edit-nombre').value = nombre;
+                        document.getElementById('edit-descripcion').value = descripcion !== 'Sin descripción disponible' ? descripcion : '';
+                        document.getElementById('edit-precio').value = precio;
+                        document.getElementById('edit-duracion').value = duracion;
+
+                        // Abrir modal de editar
+                        const modalEditar = new bootstrap.Modal(document.getElementById('modalEditar'));
+                        modalEditar.show();
+                    };
+                });
+            }
+
+            // Cargar datos en el modal Editar
             const modalEditar = document.getElementById('modalEditar');
             if (modalEditar) {
                 modalEditar.addEventListener('show.bs.modal', function (event) {
@@ -301,25 +425,6 @@
                 });
             }
 
-            // Validación de nombre único en tiempo real
-            const nombreInput = document.querySelector('input[name="Nombre"]');
-            if (nombreInput) {
-                nombreInput.addEventListener('blur', function() {
-                    const nombre = this.value;
-                    if (nombre.length > 0) {
-                        fetch(`/Servicios/VerificarNombre?nombre=${encodeURIComponent(nombre)}`)
-                            .then(response => response.json())
-                            .then(data => {
-                                if (data.existe) {
-                                    this.setCustomValidity('Este nombre de servicio ya existe');
-                                } else {
-                                    this.setCustomValidity('');
-                                }
-                            });
-                    }
-                });
-            }
-
             // Auto-ocultar alertas después de 5 segundos
             const alerts = document.querySelectorAll('.alert');
             alerts.forEach(alert => {
@@ -331,5 +436,41 @@
         });
     </script>
 
+    <style>
+        .table th {
+            border-top: none;
+            font-weight: 600;
+        }
 
+        .btn-group .btn {
+            margin: 0 2px;
+            border-radius: 4px !important;
+        }
+
+        .badge {
+            font-size: 0.85em;
+        }
+
+        .table-responsive {
+            border-radius: 0.35rem;
+        }
+
+        .form-control:focus {
+            border-color: #0d6efd;
+            box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+        }
+
+        .btn-outline-primary:hover { background-color: #0d6efd; color: white; }
+        .btn-outline-warning:hover { background-color: #ffc107; color: black; }
+        .btn-outline-danger:hover { background-color: #dc3545; color: white; }
+
+        .form-control-plaintext {
+            padding: 0.375rem 0;
+            margin-bottom: 0;
+            line-height: 1.5;
+            background-color: transparent;
+            border: solid transparent;
+            border-width: 1px 0;
+        }
+    </style>
 }
