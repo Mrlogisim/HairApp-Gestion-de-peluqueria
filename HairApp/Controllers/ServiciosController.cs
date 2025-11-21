@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace HairApp.Controllers
 {
-    [Authorize] // Requiere login para acceder y cargar las vistas
+    [Authorize]
     public class ServiciosController : Controller
     {
         private readonly ServicioService _servicioService;
@@ -20,21 +20,25 @@ namespace HairApp.Controllers
             _servicioService = servicioService;
         }
 
-        // GET: Servicios
-        public async Task<IActionResult> Index(string search)
+        // GET: Servicios (ACTUALIZADO con paginación)
+        public async Task<IActionResult> Index(string search, int pagina = 1, int cantidadPorPagina = 10)
         {
             try
             {
-                var servicios = await _servicioService.ObtenerTodosAsync();
+                // Obtener datos paginados
+                var (servicios, totalCount, totalPages) = await _servicioService.ObtenerPaginadosAsync(
+                    pagina, cantidadPorPagina, search);
 
-                // Aplicar búsqueda si existe
-                if (!string.IsNullOrEmpty(search))
-                {
-                    servicios = servicios.Where(s =>
-                        s.Nombre.Contains(search, StringComparison.OrdinalIgnoreCase) ||
-                        (s.Descripcion != null && s.Descripcion.Contains(search, StringComparison.OrdinalIgnoreCase))
-                    ).ToList();
-                }
+                // Pasar datos a la vista
+                ViewBag.PaginaActual = pagina;
+                ViewBag.TotalPaginas = totalPages;
+                ViewBag.TotalRegistros = totalCount;
+                ViewBag.CantidadPorPagina = cantidadPorPagina;
+                ViewBag.Search = search;
+
+                // Calcular rangos para mostrar
+                ViewBag.RegistroInicio = totalCount == 0 ? 0 : ((pagina - 1) * cantidadPorPagina) + 1;
+                ViewBag.RegistroFin = Math.Min(pagina * cantidadPorPagina, totalCount);
 
                 return View(servicios);
             }
@@ -73,14 +77,18 @@ namespace HairApp.Controllers
             {
                 if (ModelState.IsValid)
                 {
+                    // Validar nombre único
+                    if (await _servicioService.ExisteNombreAsync(servicio.Nombre))
+                    {
+                        TempData["Error"] = $"Ya existe un servicio con el nombre '{servicio.Nombre}'";
+                        return RedirectToAction(nameof(Index));
+                    }
+
                     await _servicioService.CrearAsync(servicio);
                     TempData["Success"] = "Servicio creado exitosamente";
                     return RedirectToAction(nameof(Index));
                 }
 
-                // Si el modelo no es válido, regresar a la vista con errores
-                var errors = ModelState.Values.SelectMany(v => v.Errors);
-                Console.WriteLine("--- FALLÓ LA VALIDACIÓN DEL MODELO ---");
                 TempData["Error"] = "Por favor, complete todos los campos requeridos correctamente";
                 return RedirectToAction(nameof(Index));
             }
@@ -108,6 +116,13 @@ namespace HairApp.Controllers
                 {
                     try
                     {
+                        // Validar nombre único (excluyendo el actual)
+                        if (await _servicioService.ExisteNombreAsync(servicio.Nombre, servicio.Id_servicio))
+                        {
+                            TempData["Error"] = $"Ya existe un servicio con el nombre '{servicio.Nombre}'";
+                            return RedirectToAction(nameof(Index));
+                        }
+
                         await _servicioService.ActualizarAsync(servicio);
                         TempData["Success"] = "Servicio actualizado exitosamente";
                     }
@@ -161,17 +176,12 @@ namespace HairApp.Controllers
             }
         }
 
-        // GET: Servicios/VerificarNombre
+        // GET: Servicios/VerificarNombre (OPTIMIZADO)
         public async Task<JsonResult> VerificarNombre(string nombre, int id = 0)
         {
             try
             {
-                var servicios = await _servicioService.ObtenerTodosAsync();
-                var existe = servicios.Any(s =>
-                    s.Nombre.Equals(nombre, StringComparison.OrdinalIgnoreCase) &&
-                    s.Id_servicio != id
-                );
-
+                var existe = await _servicioService.ExisteNombreAsync(nombre, id);
                 return Json(new { existe = existe });
             }
             catch (Exception ex)
